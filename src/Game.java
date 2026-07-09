@@ -66,6 +66,11 @@ public class Game {
 
         guessedLetters.add(userInput);
 
+        if(Character.isUpperCase(userInput.charAt(0))){
+            userInput = userInput.toLowerCase();
+            guessedLetters.add(userInput);
+        }
+
         if (wordToFind.contains(userInput)) {
             int index = wordToFind.indexOf(userInput);
 
