@@ -14,6 +14,11 @@ public class Game {
         dictionary = new Dictionary();
         guessedLetters = new ArrayList<>();
     }
+    
+    public Game(int citySet) {
+        dictionary = new Dictionary(citySet);
+        guessedLetters = new ArrayList<>();
+    }
 
     public void newGame() {
         numberOfErrors = 0;
@@ -65,6 +70,11 @@ public class Game {
         }
 
         guessedLetters.add(userInput);
+
+        if(Character.isUpperCase(userInput.charAt(0))){
+            userInput = userInput.toLowerCase();
+            guessedLetters.add(userInput);
+        }
 
         if (wordToFind.contains(userInput)) {
             int index = wordToFind.indexOf(userInput);
