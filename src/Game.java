@@ -51,9 +51,29 @@ public class Game {
 
             if (wordFound()) {
                 System.out.println("\nCongratulations! You win!");
+                playAgain();
             } else {
                 System.out.println("\nOh no! The hangman is complete.");
                 System.out.println("The city was: " + wordToFind);
+                playAgain();
+            }
+        }
+    }
+
+    public void playAgain() {
+        try (Scanner input = new Scanner(System.in)) {
+            System.out.print("\nPlay again? (y/n): ");
+            String userInput = input.next();
+            if (userInput.equals("y") || userInput.equals("Y")) {
+                Game game = new Game();
+                game.newGame();
+                game.play();
+                return;
+            } else if (userInput.equals("N") || userInput.equals("n")) {
+                return;
+            } else {
+                playAgain();
+                return;
             }
         }
     }
