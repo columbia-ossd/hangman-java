@@ -5,12 +5,16 @@ public class Game {
     private static final int MAX_ERRORS = 6;
 
     private final Dictionary dictionary;
+    private final Scanner input;
+    private final Scoreboard scoreboard;
     private String wordToFind;
     private char[] wordFound;
     private int numberOfErrors;
     private ArrayList<String> guessedLetters;
 
-    public Game() {
+    public Game(Scanner input, Scoreboard scoreboard) {
+        this.input = input;
+        this.scoreboard = scoreboard;
         dictionary = new Dictionary();
         guessedLetters = new ArrayList<>();
     }
@@ -33,48 +37,47 @@ public class Game {
     }
 
     public void play() {
-        try (Scanner input = new Scanner(System.in)) {
-            while (numberOfErrors < MAX_ERRORS && !wordFound()) {
-                System.out.print("\nEnter a letter: ");
-                String userInput = input.next();
+        while (numberOfErrors < MAX_ERRORS && !wordFound()) {
+            System.out.print("\nEnter a letter: ");
+            String userInput = input.next();
 
-                if (userInput.length() > 1) {
-                    userInput = userInput.substring(0, 1);
-                }
-
-                processGuess(userInput);
-
-                System.out.println(Drawing.getDrawing(numberOfErrors));
-                System.out.println(wordFoundContent());
-                System.out.println("Remaining tries: " + (MAX_ERRORS - numberOfErrors));
+            if (userInput.length() > 1) {
+                userInput = userInput.substring(0, 1);
             }
 
-            if (wordFound()) {
-                System.out.println("\nCongratulations! You win!");
-                playAgain();
-            } else {
-                System.out.println("\nOh no! The hangman is complete.");
-                System.out.println("The city was: " + wordToFind);
-                playAgain();
-            }
+            processGuess(userInput);
+
+            System.out.println(Drawing.getDrawing(numberOfErrors));
+            System.out.println(wordFoundContent());
+            System.out.println("Remaining tries: " + (MAX_ERRORS - numberOfErrors));
         }
+
+        if (wordFound()) {
+            System.out.println("\nCongratulations! You win!");
+            scoreboard.recordWin();
+        } else {
+            System.out.println("\nOh no! The hangman is complete.");
+            System.out.println("The city was: " + wordToFind);
+            scoreboard.recordLoss();
+        }
+
+        scoreboard.display();
+        playAgain();
     }
 
     public void playAgain() {
-        try (Scanner input = new Scanner(System.in)) {
-            System.out.print("\nPlay again? (y/n): ");
-            String userInput = input.next();
-            if (userInput.equals("y") || userInput.equals("Y")) {
-                Game game = new Game();
-                game.newGame();
-                game.play();
-                return;
-            } else if (userInput.equals("N") || userInput.equals("n")) {
-                return;
-            } else {
-                playAgain();
-                return;
-            }
+        System.out.print("\nPlay again? (y/n): ");
+        String userInput = input.next();
+
+        if (userInput.equals("y") || userInput.equals("Y")) {
+            Game game = new Game(input, scoreboard);
+            game.newGame();
+            game.play();
+        } else if (userInput.equals("n") || userInput.equals("N")) {
+            System.out.println("\nThanks for playing!");
+        } else {
+            System.out.println("Please enter 'y' or 'n'.");
+            playAgain();
         }
     }
 
