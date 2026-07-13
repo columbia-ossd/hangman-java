@@ -5,13 +5,42 @@ public class Main {
         System.out.println("=======================================");
         System.out.println("          Hangman Game");
         System.out.println("=======================================");
-        System.out.println("\nLet's guess a Washington State city!");
+        int stateSet = chooseState();
 
         Scanner input = new Scanner(System.in);
         Scoreboard scoreboard = new Scoreboard();
 
-        Game game = new Game(input, scoreboard);
+        Game game = new Game(input, scoreboard, stateSet);
+        System.out.println("\nLet's play Hangman!");
+    
         game.newGame();
         game.play();
     }
+        private static int chooseState() {
+            Scanner input = new Scanner(System.in);
+            int choice = 0;
+            
+            while (choice != 1 && choice != 2) {
+                System.out.println("\n Choose a State:");
+                System.out.println("1. Washington State");
+                System.out.println("2. New York State");
+                System.out.print("Enter your choice: ");
+                    if (input.hasNextInt()) {
+                        choice = input.nextInt();
+                    } else {
+                        input.next();
+                    }
+                if (choice != 1 && choice != 2) {
+                    System.out.println("Invalid choice. Please enter 1 or 2.");
+                }
+            }
+
+            if (choice == 2){
+                return Dictionary.NEW_YORK;
+            }else{
+                 return Dictionary.WASHINGTON;
+            } 
+        }
+
+    
 }

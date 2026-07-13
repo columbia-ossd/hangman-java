@@ -11,11 +11,13 @@ public class Game {
     private char[] wordFound;
     private int numberOfErrors;
     private ArrayList<String> guessedLetters;
+    private int citySet;
 
-    public Game(Scanner input, Scoreboard scoreboard) {
+    public Game(Scanner input, Scoreboard scoreboard, int citySet) {
         this.input = input;
         this.scoreboard = scoreboard;
-        dictionary = new Dictionary();
+        this.citySet = citySet;
+        dictionary = new Dictionary(citySet);
         guessedLetters = new ArrayList<>();
     }
 
@@ -70,7 +72,7 @@ public class Game {
         String userInput = input.next();
 
         if (userInput.equals("y") || userInput.equals("Y")) {
-            Game game = new Game(input, scoreboard);
+            Game game = new Game(input, scoreboard, citySet);
             game.newGame();
             game.play();
         } else if (userInput.equals("n") || userInput.equals("N")) {
@@ -88,6 +90,11 @@ public class Game {
         }
 
         guessedLetters.add(userInput);
+
+        if(Character.isUpperCase(userInput.charAt(0))){
+            userInput = userInput.toLowerCase();
+            guessedLetters.add(userInput);
+        }
 
         if (wordToFind.contains(userInput)) {
             int index = wordToFind.indexOf(userInput);
