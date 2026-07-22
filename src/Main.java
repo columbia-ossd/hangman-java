@@ -44,3 +44,28 @@ public class Main {
 
     
 }
+
+
+
+// import java.util.Scanner;
+
+// public class Main {
+//     public static void main(String[] args) {
+//         System.out.println("=======================================");
+//         System.out.println("          Hangman Game");
+//         System.out.println("=======================================");
+       
+
+//         Scoreboard scoreboard = new Scoreboard();
+
+//         Game game = new Game(scoreboard);
+//         System.out.println("\nLet's play Hangman!");
+
+//          System.out.println("debug 0 ");
+    
+//         game.newGame();
+//          System.out.println("debug 4");
+//         game.play();
+//     }
+    
+// }
