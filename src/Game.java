@@ -13,16 +13,33 @@ public class Game {
     private ArrayList<String> guessedLetters;
     private int citySet;
 
-    public Game(Scanner input, Scoreboard scoreboard, int citySet) {
+    public Game(Scanner input, Scoreboard scoreboard) {
         this.input = input;
         this.scoreboard = scoreboard;
-        this.citySet = citySet;
         dictionary = new Dictionary(citySet);
         guessedLetters = new ArrayList<>();
     }
 
     public void newGame() {
         numberOfErrors = 0;
+        System.out.print("\nEnter a letter: ");
+        int choice = 0;
+        
+        while (choice != 1 && choice != 2) {
+            System.out.println("\n Choose a State:");
+            System.out.println("1. Washington State");
+            System.out.println("2. New York State");
+            System.out.print("Enter your choice: ");
+                if (input.hasNextInt()) {
+                    choice = input.nextInt();
+                } else {
+                    input.next();
+                }
+            if (choice != 1 && choice != 2) {
+                System.out.println("Invalid choice. Please enter 1 or 2.");
+            }
+        }
+        
         guessedLetters.clear();
 
         wordToFind = dictionary.getRandomWord();
@@ -72,7 +89,7 @@ public class Game {
         String userInput = input.next();
 
         if (userInput.equals("y") || userInput.equals("Y")) {
-            Game game = new Game(input, scoreboard, citySet);
+            Game game = new Game(input, scoreboard);
             game.newGame();
             game.play();
         } else if (userInput.equals("n") || userInput.equals("N")) {
@@ -83,18 +100,9 @@ public class Game {
         }
     }
 
-    private void processGuess(String userInput) {
-        if (guessedLetters.contains(userInput)) {
-            System.out.println("You already guessed '" + userInput + "'. Try another letter.");
-            return;
-        }
+    private int findLetters(char letter){
 
-        guessedLetters.add(userInput);
-
-        if(Character.isUpperCase(userInput.charAt(0))){
-            userInput = userInput.toLowerCase();
-            guessedLetters.add(userInput);
-        }
+        String userInput = String.valueOf(letter);
 
         if (wordToFind.contains(userInput)) {
             int index = wordToFind.indexOf(userInput);
@@ -103,7 +111,35 @@ public class Game {
                 wordFound[index] = userInput.charAt(0);
                 index = wordToFind.indexOf(userInput, index + 1);
             }
-        } else {
+
+            return 1;
+        } 
+
+        guessedLetters.add(userInput);
+
+        return 0;
+    }
+
+
+
+    private void processGuess(String userInput) {
+        if (guessedLetters.contains(userInput)) {
+            System.out.println("You already guessed '" + userInput + "'. Try another letter.");
+            return;
+        }
+
+        String alt = ""; 
+
+        if(Character.isUpperCase(userInput.charAt(0))){
+            alt = userInput.toLowerCase();
+        } 
+
+        if(Character.isLowerCase(userInput.charAt(0))){
+            alt = userInput.toUpperCase();
+        }
+
+        if (findLetters(userInput.charAt(0)) == 0 
+            && findLetters(alt.charAt(0)) == 0){
             numberOfErrors++;
         }
     }
