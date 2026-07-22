@@ -13,34 +13,32 @@ public class Game {
     private ArrayList<String> guessedLetters;
     private int citySet;
 
-    public Game(Scanner input, Scoreboard scoreboard, int citySet) {
+    public Game(Scanner input, Scoreboard scoreboard) {
         this.input = input;
         this.scoreboard = scoreboard;
-        this.citySet = citySet;
         dictionary = new Dictionary(citySet);
         guessedLetters = new ArrayList<>();
     }
 
     public void newGame() {
         numberOfErrors = 0;
-
-        // Scanner input = new Scanner(System.in);
-        // int choice = 0;
+        System.out.print("\nEnter a letter: ");
+        int choice = 0;
         
-        // while (choice != 1 && choice != 2) {
-        //     System.out.println("\n Choose a State:");
-        //     System.out.println("1. Washington State");
-        //     System.out.println("2. New York State");
-        //     System.out.print("Enter your choice: ");
-        //         if (input.hasNextInt()) {
-        //             choice = input.nextInt();
-        //         } else {
-        //             input.next();
-        //         }
-        //     if (choice != 1 && choice != 2) {
-        //         System.out.println("Invalid choice. Please enter 1 or 2.");
-        //     }
-        // }
+        while (choice != 1 && choice != 2) {
+            System.out.println("\n Choose a State:");
+            System.out.println("1. Washington State");
+            System.out.println("2. New York State");
+            System.out.print("Enter your choice: ");
+                if (input.hasNextInt()) {
+                    choice = input.nextInt();
+                } else {
+                    input.next();
+                }
+            if (choice != 1 && choice != 2) {
+                System.out.println("Invalid choice. Please enter 1 or 2.");
+            }
+        }
         
         guessedLetters.clear();
 
@@ -91,7 +89,7 @@ public class Game {
         String userInput = input.next();
 
         if (userInput.equals("y") || userInput.equals("Y")) {
-            Game game = new Game(input, scoreboard, citySet);
+            Game game = new Game(input, scoreboard);
             game.newGame();
             game.play();
         } else if (userInput.equals("n") || userInput.equals("N")) {
